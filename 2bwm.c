@@ -37,6 +37,8 @@ enum {TWOBWM_MOVE,TWOBWM_RESIZE};
 #define TWOBWM_NOWS     0xfffffffe  // This means we didn't get any window hint at all.
 #define LENGTH(x)       (sizeof(x)/sizeof(*x))
 #define MIN(X, Y)       ((X) < (Y) ? (X) : (Y))
+#define knloop(str,sep,n) for (k=strtok((str), (sep)); \
+                               k!=NULL && i <= (n); k=strtok(NULL, (sep)), i++)
 #define CLEANMASK(mask) (mask & ~(numlockmask|XCB_MOD_MASK_LOCK))
 #define CONTROL         XCB_MOD_MASK_CONTROL /* Control key */
 #define ALT             XCB_MOD_MASK_1       /* ALT key */
@@ -215,6 +217,8 @@ static void getmonsize(int16_t *mon_x, int16_t *mon_y, uint16_t *mon_width, uint
 static void noborder(int16_t *temp,struct client *client, bool set_unset);
 static void movepointerback(const int16_t startx, const int16_t starty, const struct client *client);
 static void snapwindow(struct client *client);
+static void char_setting(char **setting, const char *envvar, const int len);
+static void int_setting(uint8_t *setting, const char *envvar, const int len);
 #include "config.h"
 
 ///---Function bodies---///
@@ -229,6 +233,16 @@ void nextworkspace(){curws==WORKSPACES-1?changeworkspace_helper(0):changeworkspa
 void prevworkspace(){curws>0?changeworkspace_helper(curws-1):changeworkspace_helper(WORKSPACES-1);}
 void twobwm_exit(){exit(EXIT_SUCCESS);}
 void sigcatch(const int sig){sigcode = sig;}
+void char_setting(char **setting, const char *envvar, const int len) {
+    char *k, *envval; int i=0;
+    if ((envval = getenv(envvar))) knloop(envval, ",", len) setting[i] = k;
+}
+void int_setting(uint8_t *setting, const char *envvar, const int len){
+    char *k, *envval; int i=0;
+    if ((envval = getenv(envvar))) knloop(envval, ",", len) {
+        setting[i] = (uint8_t) strtol(k, NULL, 10);
+    }
+}
 void saveorigsize(struct client *client)
 {
 	client->origsize.x     = client->x;     client->origsize.y      = client->y;
@@ -1923,6 +1937,15 @@ bool setup(int scrno)
 {
     screen = xcb_screen_of_display(conn, scrno);
     if (!screen) return false;
+
+    //configure the WM with any relevant env values
+    char_setting(colors,       "TWOBWM_COLORS",       LENGTH(colors));
+    char_setting(ignore_names, "TWOBWM_IGNORE_NAMES", LENGTH(ignore_names));
+    char_setting(terminal,     "TWOBWM_TERM",         LENGTH(terminal));
+    char_setting(menucmd,      "TWOBWM_MENU",         LENGTH(menucmd));
+    char_setting(runcmd,       "TWOBWM_RUN",          LENGTH(run));
+    int_setting(borders,       "TWOBWM_BORDERS",      LENGTH(borders));
+
     xcb_window_t cwin = xcb_generate_id(conn);
     uint32_t event_mask_pointer[] = {XCB_EVENT_MASK_POINTER_MOTION};
     xcb_create_window(conn, XCB_COPY_FROM_PARENT, cwin, screen->root, 0, 0, screen->width_in_pixels, screen->height_in_pixels, 0, XCB_WINDOW_CLASS_INPUT_OUTPUT, XCB_COPY_FROM_PARENT,XCB_CW_EVENT_MASK, event_mask_pointer);

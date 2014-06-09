@@ -19,7 +19,7 @@ static const uint8_t offsets[] = {0,0,0,0};
  *2)fixedcol         3)unkilcol
  *4)fixedunkilcol    5)outerbordercol
  *6)emptycol         */
-static const char *colors[] = {"#35586c","#333333","#7a8c5c","#ff6666","#cc9933","#0d131a","#000000"};
+char *colors[] = {"#35586c","#333333","#7a8c5c","#ff6666","#cc9933","#0d131a","#000000"};
 /* if this is set to true the inner border and outer borders colors will be swapped */
 static const bool inverted_colors = true;
 ///---Cursor---///
@@ -32,14 +32,14 @@ static const bool inverted_colors = true;
 /*0) Outer border size. If you put this negative it will be a square.
  *1) Full borderwidth    2) Magnet border size    
  *3) Resize border size  */
-static const uint8_t borders[] = {3,5,5,4};
+uint8_t borders[] = {3,5,5,4};
 /* Windows that won't have a border.*/
 #define LOOK_INTO "WM_NAME"
-static const char *ignore_names[] = {"bar", "xclock"};
+char *ignore_names[] = {"bar", "xclock"};
 ///--Menus and Programs---///
-static const char *menucmd[]   = { "/usr/bin/my_menu.sh", NULL };
-static const char *gmrun[]     = { "/usr/bin/gmrun",NULL};
-static const char *terminal[]  = { "urxvtc", NULL };
+char *menucmd[]   = { "/usr/bin/my_menu.sh", NULL };
+char *runcmd[]     = { "/usr/bin/gmrun",NULL};
+char *terminal[]  = { "urxvtc", NULL };
 static const char *click1[]    = { "xdotool","click", "1", NULL };
 static const char *click2[]    = { "xdotool","click", "2", NULL };
 static const char *click3[]    = { "xdotool","click", "3", NULL };
@@ -171,7 +171,7 @@ static key keys[] = {
     // Start programs
     {  MOD ,              XK_Return,     start,             {.com = terminal}},
     {  MOD ,              XK_w,          start,             {.com = menucmd}},
-    {  MOD |SHIFT,        XK_w,          start,             {.com = gmrun}},
+    {  MOD |SHIFT,        XK_w,          start,             {.com = runcmd}},
     // Exit or restart 2bwm
     {  MOD |CONTROL,      XK_q,          twobwm_exit,         {.i=0}},
     {  MOD |CONTROL,      XK_r,          twobwm_restart,      {.i=0}},
