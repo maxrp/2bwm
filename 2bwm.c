@@ -60,7 +60,7 @@ struct monitor {
     struct item *item;              // Pointer to our place in output list.
 };
 typedef union {
-    const char** com;
+    char** com;
     const int8_t i;
 } Arg;
 typedef struct {

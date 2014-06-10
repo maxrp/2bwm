@@ -37,12 +37,12 @@ uint8_t borders[] = {3,5,5,4};
 #define LOOK_INTO "WM_NAME"
 char *ignore_names[] = {"bar", "xclock"};
 ///--Menus and Programs---///
-char *menucmd[]   = { "/usr/bin/my_menu.sh", NULL };
-char *runcmd[]     = { "/usr/bin/gmrun",NULL};
-char *terminal[]  = { "urxvtc", NULL };
-static const char *click1[]    = { "xdotool","click", "1", NULL };
-static const char *click2[]    = { "xdotool","click", "2", NULL };
-static const char *click3[]    = { "xdotool","click", "3", NULL };
+static char *menucmd[]   = { "/usr/bin/my_menu.sh", NULL };
+static char *runcmd[]     = { "/usr/bin/gmrun",NULL};
+static char *terminal[]  = { "urxvtc", NULL };
+static char *click1[]    = { "xdotool","click", "1", NULL };
+static char *click2[]    = { "xdotool","click", "2", NULL };
+static char *click3[]    = { "xdotool","click", "3", NULL };
 ///--Custom foo---///
 static void halfandcentered(const Arg *arg)
 {
