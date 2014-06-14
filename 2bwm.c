@@ -97,7 +97,7 @@ struct winconf {                    // Window configuration data.
 ///---Globals---///
 static void (*events[XCB_NO_OPERATION])(xcb_generic_event_t *e);
 static unsigned int numlockmask = 0;
-int sigcode;                        // Signal code. Non-zero if we've been interruped by a signal.
+volatile sig_atomic_t sigcode;                        // Signal code. Non-zero if we've been interruped by a signal.
 xcb_connection_t *conn;             // Connection to X server.
 xcb_ewmh_connection_t *ewmh;        // Ewmh Connection.
 xcb_screen_t     *screen;           // Our current screen.
