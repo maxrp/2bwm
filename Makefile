@@ -1,21 +1,21 @@
-VERSION=2013-3
+VERSION=2014-8
 
 RM=/bin/rm
-PREFIX=/usr/local
-LIB_SUFFIX=lib
-MANPREFIX=$(PREFIX)/share/man
-TWOBWM_PATH=${PREFIX}/bin/2bwm
-
+PREFIX?=/usr/local
+LIB_SUFFIX?=lib
+MANPREFIX?=$(PREFIX)/share/man
+TWOBWM_PATH?=${PREFIX}/bin/2bwm
+X11_INCLUDE?=/usr/local/include
 
 #CC=clang
 DIST=2bwm-$(VERSION)
 SRC=2bwm.c list.h hidden.c config.h
 DISTFILES=Makefile README.md TODO 2bwm.man $(SRC)
-CFLAGS+=-std=c99 -Os -s -I/usr/local/include \
+CFLAGS+=-std=c99 -Os -s -I${X11_INCLUDE} \
 		-DNCOMPTON -DTWOBWM_PATH=\"${TWOBWM_PATH}\" 
 
 LDFLAGS+=-L${PREFIX}/${LIB_SUFFIX} -lxcb -lxcb-randr -lxcb-keysyms \
-		 -lxcb-icccm -lxcb-util -lxcb-ewmh
+		 -lxcb-icccm -lxcb-ewmh
 TARGETS=2bwm hidden
 OBJS=2bwm.o
 
